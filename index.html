@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>MINSO PARK : DIGITAL EDITORIAL</title>
+    <style>
+        /* [0] GLOBAL STYLES */
+        body {
+            background-color: #060709;
+            color: #b0b5c0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            letter-spacing: -0.3px;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* [1] 런웨이 레드 매트릭스 배경 */
+        .binary-bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            opacity: 0.22;
+        }
+
+        .binary-scroll {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff003c;
+            line-height: 1.3;
+            word-break: break-all;
+            white-space: pre-wrap;
+            width: 100%;
+            height: 200%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: matrixScroll 18s linear infinite;
+        }
+
+        @keyframes matrixScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        /* [2] INTRO SPLASH EFFECT */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #060709;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOutOverlay 0.5s forwards;
+            animation-delay: 1.8s;
+        }
+
+        .intro-cat {
+            width: 140px;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.6);
+            animation: scaleUpCat 1.5s ease-in-out forwards;
+        }
+
+        @keyframes scaleUpCat {
+            0% { opacity: 0; transform: scale(0.6); }
+            50% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 15px #ff003c); }
+            100% { opacity: 0; transform: scale(1.3); }
+        }
+
+        @keyframes fadeOutOverlay {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* [3] NAVIGATION BAR WITH CENTERED 404 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 24px 40px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; /* 중앙 배치를 위한 그리드 구조 */
+            align-items: center;
+            background-color: rgba(6, 7, 9, 0.9);
+            border-bottom: 1px solid #171a22;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-self: start;
+        }
+
+        .logo-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #ff003c;
+        }
+
+        /* 상단 중앙 오류 코드 404 스타일 */
+        .nav-error-code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #ffffff;
+            background-color: #ff003c;
+            padding: 2px 12px;
+            border-radius: 3px;
+            letter-spacing: 3px;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.6);
+            animation: pulseError 2s infinite alternate;
+        }
+
+        @keyframes pulseError {
+            0% { opacity: 0.8; box-shadow: 0 0 10px rgba(255, 0, 60, 0.4); }
+            100% { opacity: 1; box-shadow: 0 0 25px rgba(255, 0, 60, 0.9); }
+        }
+
+        .nav-status {
+            font-size: 0.75rem;
+            color: #ff003c;
+            font-weight: 700;
+            letter-spacing: 2px;
+            justify-self: end;
+        }
+
+        /* [4] MAIN CONTAINER */
+        .main-content {
+            max-width: 800px;
+            margin: 170px auto 80px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeInPage 1s forwards;
+            animation-delay: 2.2s;
+        }
+
+        @keyframes fadeInPage {
+            to { opacity: 1; }
+        }
+
+        /* [5] HERO HEADER */
+        .hero-section {
+            margin-bottom: 80px;
+        }
+
+        .hero-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -3px;
+            line-height: 1;
+        }
+
+        .title-accent-box {
+            width: 14px;
+            height: 14px;
+            background-color: #ff003c;
+            margin-top: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #ff003c;
+            font-weight: 700;
+            margin: 18px 0 0 0;
+            letter-spacing: -0.5px;
+        }
+
+        /* [6] INTERACTIVE ARCHIVE GRID */
+        .archive-item {
+            background-color: rgba(15, 18, 24, 0.97);
+            border: 1px solid #1e2330;
+            margin-bottom: 22px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        }
+
+        .archive-trigger {
+            padding: 26px 24px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(20, 24, 33, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        /* 마우스 호버 효과 증가 */
+        .archive-trigger:hover {
+            background-color: rgba(255, 0, 60, 0.1);
+            color: #ff003c;
+            padding-left: 30px; /* 오른쪽으로 살짝 밀리는 모션 */
+        }
+
+        /* 마우스 클릭(Active) 순간 강렬한 피드백 효과 */
+        .archive-trigger:active {
+            background-color: #ff003c;
+            color: #ffffff;
+            transform: scale(0.99);
+        }
+
+        .trigger-flex {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .square-icon {
+            width: 8px;
+            height: 8px;
+            background-color: #ff003c;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .archive-trigger:hover .square-icon {
+            transform: scale(1.5) rotate(45deg); /* 사각형이 다이아몬드로 커짐 */
+        }
+
+        .trigger-icon {
+            font-size: 0.85rem;
+            color: #ff003c;
+            transition: transform 0.3s;
+        }
+
+        .archive-trigger:active .trigger-icon {
+            color: #ffffff;
+        }
+
+        .archive-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .archive-item.active .archive-content {
+            max-height: 350px;
+        }
+
+        .archive-item.active .trigger-icon {
+            transform: rotate(180deg);
+        }
+
+        .inner-grid {
+            padding: 35px 28px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .deco-line {
+            width: 2px;
+            height: 45px;
+            background-color: #2b3242;
+        }
+
+        .archive-item.active .deco-line {
+            background-color: #ff003c;
+            transition: background-color 0.3s;
+        }
+
+        .inner-text {
+            line-height: 1.9;
+            font-size: 1.05rem;
+            color: #b0b5c0;
+            margin: 0;
+            word-break: keep-all;
+        }
+
+        .bold-white {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* [7] FOOTER & EASTER EGG TRIGGER */
+        .footer {
+            border-top: 1px solid #171a22;
+            padding-top: 40px;
+            margin-top: 140px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #505666;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* 클릭 유도형 텍스트 버튼 스타일 */
+        .easter-trigger {
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px 10px;
+            border: 1px dashed #ff003c;
+            background-color: rgba(255, 0, 60, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .easter-trigger:hover {
+            background-color: #ff003c;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .easter-trigger:active {
+            transform: translateY(1px) scale(0.95);
+        }
+
+        /* [8] EASTER EGG OVERLAY */
+        #easter-egg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(6, 7, 9, 0.98);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        #easter-egg-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .skull-svg {
+            width: 100px;
+            height: auto;
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+        }
+
+        #easter-egg-overlay.visible .skull-svg {
+            opacity: 1;
+            transform: scale(8);
+        }
+
+        .close-btn {
+            position: absolute;
+            bottom: 50px;
+            z-index: 10001;
+            background-color: #ffffff;
+            border: none;
+            color: #000000;
+            padding: 14px 35px;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .close-btn:hover {
+            background-color: #ff003c;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+        
+        .close-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="binary-bg-wrapper">
+        <div class="binary-scroll" id="matrix-source"></div>
+    </div>
+
+    <div id="intro-overlay">
+        <svg class="intro-cat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15,35 L35,10 L45,28 L55,28 L65,10 L85,35 L75,75 L50,90 L25,75 Z" 
+                  fill="none" 
+                  stroke="#ff003c" 
+                  stroke-width="2.5" 
+                  stroke-linejoin="miter"/>
+        </svg>
+    </div>
+
+    <div id="easter-egg-overlay">
+        <svg class="skull-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20,40 C20,20 80,20 80,40 C80,55 75,65 70,70 L70,85 L30,85 L30,70 C25,65 20,55 20,40 Z" fill="none" stroke="#ff003c" stroke-width="2"/>
+            <line x1="30" y1="85" x2="30" y2="75" stroke="#ff003c" stroke-width="2"/>
+            <line x1="40" y1="85" x2="40" y2="70" stroke="#ff003c" stroke-width="2"/>
+            <line x1="50" y1="85" x2="50" y2="70" stroke="#ff003c" stroke-width="2"/>
+            <line x1="60" y1="85" x2="60" y2="70" stroke="#ff003c" stroke-width="2"/>
+            <line x1="70" y1="85" x2="70" y2="75" stroke="#ff003c" stroke-width="2"/>
+            <circle cx="38" cy="45" r="6" fill="none" stroke="#ff003c" stroke-width="2"/>
+            <circle cx="62" cy="45" r="6" fill="none" stroke="#ff003c" stroke-width="2"/>
+            <polygon points="50,53 46,59 54,59" fill="none" stroke="#ff003c" stroke-width="2"/>
+        </svg>
+        <button class="close-btn" onclick="toggleEasterEgg(false)">CLOSE SYSTEM</button>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <span class="logo-dot"></span>
+            <span>M_PARK</span>
+        </div>
+        <div class="nav-error-code">404 ERROR</div>
+        <div class="nav-status">● LIVE_STREAM</div>
+    </nav>
+
+    <main class="main-content">
+        
+        <header class="hero-section">
+            <div class="hero-title-wrapper">
+                <h1 class="hero-title">MINSO PARK</h1>
+                <div class="title-accent-box"></div>
+            </div>
+            <p class="hero-subtitle">나는 박민소다.</p>
+        </header>
+
+        <section class="archive-container">
+            
+            <div class="archive-item">
+                <div class="archive-trigger" onclick="toggleArchive(this)">
+                    <div class="trigger-flex">
+                        <span class="square-icon"></span>
+                        <span>Index 01 / Identity</span>
+                    </div>
+                    <span class="trigger-icon">▼</span>
+                </div>
+                <div class="archive-content">
+                    <div class="inner-grid">
+                        <div class="deco-line"></div>
+                        <p class="inner-text">
+                            불필요한 수식을 배제하고 선명한 직관성을 지향하는 <span class="bold-white">박민소</span>입니다. 
+                            전체적으로 <span class="bold-white">차분한</span> 태도와 내면의 깊이를 선호하며, 정돈된 논리와 관점을 텍스트로 치밀하게 구조화하는 <span class="bold-white">글쓰기</span>에 강점을 두고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="archive-item">
+                <div class="archive-trigger" onclick="toggleArchive(this)">
+                    <div class="trigger-flex">
+                        <span class="square-icon"></span>
+                        <span>Index 02 / Analysis</span>
+                    </div>
+                    <span class="trigger-icon">▼</span>
+                </div>
+                <div class="archive-content">
+                    <div class="inner-grid">
+                        <div class="deco-line"></div>
+                        <p class="inner-text">
+                            표면적인 현상 아래 깔린 인간 심리의 메커니즘을 추적하는 <span class="bold-white">범죄</span> 영역에 깊은 흥미를 느낍니다. 
+                            일상의 밀도 높은 몰입을 위해 내러티브가 짙은 <span class="bold-white">영화 시청</span>을 즐기며, 낯선 환경에서의 지평 확장을 위해 <span class="bold-white">여행</span>을 떠납니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="archive-item">
+                <div class="archive-trigger" onclick="toggleArchive(this)">
+                    <div class="trigger-flex">
+                        <span class="square-icon"></span>
+                        <span>Index 03 / Objective</span>
+                    </div>
+                    <span class="trigger-icon">▼</span>
+                </div>
+                <div class="archive-content">
+                    <div class="inner-grid">
+                        <div class="deco-line"></div>
+                        <p class="inner-text">
+                            다음 목표를 향한 확장을 지속합니다. 사고체계와 무대를 넓히기 위한 수단으로 현재 <span class="bold-white">불어 배우기</span>에 집중하고자 하며, 
+                            궁극적으로는 글로벌 네트워크 안에서 실질적인 가치를 만들어내는 <span class="bold-white">국제기구 취직</span>을 지향점으로 삼고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <div>© MINSO PARK.</div>
+            <div class="easter-trigger" onclick="toggleEasterEgg(true)">SYSTEM OVERFLOW</div>
+        </footer>
+
+    </main>
+
+    <script>
+        function toggleArchive(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+
+        function toggleEasterEgg(show) {
+            const overlay = document.getElementById("easter-egg-overlay");
+            if (show) {
+                overlay.classList.add("visible");
+            } else {
+                overlay.classList.remove("visible");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById("matrix-source");
+            let rawString = "";
+            
+            const targetLength = Math.floor((window.innerWidth * window.innerHeight) / 100);
+            
+            for(let k = 0; k < targetLength; k++) {
+                rawString += Math.random() > 0.5 ? "1" : "0";
+                if(Math.random() > 0.94) rawString += " ";
+            }
+            
+            container.innerText = rawString + "\n\n" + rawString;
+        });
+    </script>
+
+</body>
+</html>
